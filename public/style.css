@@ -1,0 +1,57 @@
+/* public/style.css */
+body {
+  font-family: Arial, sans-serif;
+  background: #121212;
+  color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+h1 {
+  text-align: center;
+  color: #4cafef;
+}
+
+.status {
+  margin-top: 20px;
+  padding: 10px;
+  border-left: 4px solid #4cafef;
+  background: #222;
+  border-radius: 8px;
+}
+
+.status p {
+  margin: 6px 0;
+  font-size: 15px;
+}
+
+footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 13px;
+  color: #aaa;
+}
+.status-indicator {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.status-indicator.running {
+  background-color: #4caf50; /* green */
+}
+
+.status-indicator.offline {
+  background-color: #f44336; /* red */
+}
