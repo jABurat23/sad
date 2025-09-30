@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 3000;
 const startedAt = Date.now();
 
 app.use(express.static('public'));
+app.use(express.json());
+
 
 function formatUptime(seconds) {
   const days = Math.floor(seconds / 86400);
@@ -48,7 +50,7 @@ app.get('/status', (req, res) => {
         <p><strong>Version:</strong> <span id="version">loading...</span></p>
       </div>
       <footer>
-        &copy; ${new Date().getFullYear()} Chatbot Project
+        &copy; ${new Date().getFullYear()} JABURAT chatbot.
       </footer>
     </div>
     <script src="/script.js"></script>
@@ -77,6 +79,27 @@ app.get('/status-data', (req, res) => {
     version: packageJson.version || null
   });
 });
+
+// Simple chatbot test endpoint
+app.post('/chat', (req, res) => {
+  const { message } = req.body;
+
+  // Temporary bot logic
+  let reply = "I didn’t understand that 🤖";
+
+  if (!message) {
+    reply = "Please type something!";
+  } else if (message.toLowerCase().includes("hello")) {
+    reply = "Hi there! 👋 I’m your chatbot.";
+  } else if (message.toLowerCase().includes("time")) {
+    reply = `⏰ Current server time: ${new Date().toLocaleTimeString()}`;
+  } else if (message.toLowerCase().includes("bye")) {
+    reply = "Goodbye! 👋 Have a great day!";
+  }
+
+  res.json({ reply });
+});
+
 
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
