@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbot Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      background: #161b22;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    nav .links a {
+      color: #58a6ff;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav .links a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #161b22;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    h2 { color: #58a6ff; }
+    .news-item { margin-bottom: 1rem; }
+    .news-item a { color: #f85149; text-decoration: none; }
+    .news-item a:hover { text-decoration: underline; }
+
+    .card button {
+  padding: 8px 14px;
+  border: none;
+  background: #0078ff;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.card button:hover {
+  background: #005ccc;
+}
+
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+      <h3>🤖 My Chatbot Dashboard</h3>
+    </div>
+    <div class="links">
+      <a href="/dashboard">Home</a>
+      <a href="/status">Status</a>
+      <a href="/owner/secret" id="ownerPanel" style="display:none;">Owner Panel</a>
+      <a href="/logout" style="color:#f85149;">Logout</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="card">
+      <h2>Welcome, <span id="user"></span> (<span id="role"></span>)</h2>
+      <p>🕒 <strong>Uptime:</strong> <span id="uptime"></span></p>
+      <p>💻 <strong>Node Version:</strong> <span id="nodeVersion"></span></p>
+      <p>🧠 <strong>Platform:</strong> <span id="platform"></span></p>
+    </div>
+
+    <div class="card" id="announcementCard">
+  <h2>📢 Announcements</h2>
+  <div id="announcementView">
+    <p id="announcement">Loading announcement...</p>
+  </div>
+
+  <div id="announcementEditor" style="display:none;">
+    <form id="announceForm">
+      <input type="text" id="title" placeholder="Title" required><br><br>
+      <textarea id="message" rows="3" placeholder="Message" required></textarea><br><br>
+      <button type="submit">Save Announcement</button>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <h2>⚙️ System Monitor</h2>
+  <p><strong>CPU Usage:</strong> <span id="cpu">Loading...</span>%</p>
+  <p><strong>Memory Usage:</strong> <span id="memUsed">0</span> / <span id="memTotal">0</span> MB</p>
+  <p><strong>Free Memory:</strong> <span id="memFree">0</span> MB</p>
+  <p><strong>Node Version:</strong> <span id="sysNodeVersion">-</span></p>
+  <p><strong>Platform:</strong> <span id="sysPlatform">-</span></p>
+
+  <div id="ownerControls" style="display:none;">
+    <hr>
+    <button id="restartBtn">Restart Server</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>📊 Realtime Analytics</h2>
+  <p><b>Active Users:</b> <span id="activeUsers">0</span></p>
+  <p><b>Total Messages:</b> <span id="totalMessages">0</span></p>
+  <p><b>Uptime:</b> <span id="analyticsUptime">–</span></p>
+</div>
+
+<div class="card">
+  <h2>📜 System Logs</h2>
+  <pre id="logs" class="logs"></pre>
+  <div id="logControls" style="display:none;">
+    <button id="clearLogsBtn">Clear Logs</button>
+  </div>
+</div>
+
+
+    <div class="card">
+      <h2>🤖 Chatbot & AI News</h2>
+      <div id="newsContainer">
+        <p>Loading news...</p>
+      </div>
+    </div>
+  </main>
+
+  <div class="card" id="ownerSocketPanel" style="display:none;">
+  <h2>👑 Owner Control Panel</h2>
+  <h3>Active Users (<span id="activeUserCount">0</span>)</h3>
+  <ul id="userList"></ul>
+
+  <hr>
+  <h3>Broadcast Message</h3>
+  <input type="text" id="broadcastMsg" placeholder="Type a message..." />
+  <button id="broadcastBtn">Send</button>
+
+  <hr>
+  <h3>Force Logout</h3>
+  <input type="text" id="forceUser" placeholder="Username (or 'all')" />
+  <button id="forceLogoutBtn">Logout</button>
+</div>
+
+<div class="card" id="logHistory" style="display:none;">
+  <h2>🧾 Log History</h2>
+  <select id="logFilter">
+    <option value="all">All</option>
+    <option value="info">Info</option>
+    <option value="system">System</option>
+    <option value="error">Error</option>
+  </select>
+  <button id="refreshLogs">Refresh</button>
+  <button id="clearLogs" style="background:#c0392b;">Clear Logs</button>
+  <pre id="logList" style="max-height:300px;overflow-y:auto;"></pre>
+</div>
+
+
+
+  <script src="/scripts/dashboard.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+
+</body>
+</html>

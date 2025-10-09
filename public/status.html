@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Server Status</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      text-align: center;
+      padding: 2rem;
+    }
+    h1 {
+      color: #58a6ff;
+    }
+    .status-box {
+      background: #161b22;
+      border-radius: 10px;
+      padding: 1.5rem;
+      display: inline-block;
+      margin-top: 1rem;
+      text-align: left;
+      min-width: 300px;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #30363d;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🚀 Server Status</h1>
+  <div class="status-box">
+    <p><strong>Current User:</strong> <span id="currentUser">Loading...</span></p>
+    <p><strong>Role:</strong> <span id="userRole">Loading...</span></p>
+    <hr>
+    <p><strong>Started At:</strong> <span id="startedAt">Loading...</span></p>
+    <p><strong>Current Time:</strong> <span id="currentTime">Loading...</span></p>
+    <p><strong>Uptime:</strong> <span id="uptime">Loading...</span></p>
+    <p><strong>Node Version:</strong> <span id="nodeVersion">Loading...</span></p>
+    <p><strong>Platform:</strong> <span id="platform">Loading...</span></p>
+  </div>
+
+  <script>
+    async function fetchStatus() {
+      try {
+        const res = await fetch("/api/status");
+        const data = await res.json();
+        document.getElementById("startedAt").textContent = data.startedAt;
+        document.getElementById("currentTime").textContent = data.currentTime;
+        document.getElementById("uptime").textContent = data.uptime;
+        document.getElementById("nodeVersion").textContent = data.nodeVersion;
+        document.getElementById("platform").textContent = data.platform;
+        document.getElementById("currentUser").textContent = data.currentUser.username;
+        document.getElementById("userRole").textContent = data.currentUser.role;
+      } catch (err) {
+        console.error("Error fetching status:", err);
+      }
+    }
+
+    fetchStatus();
+    setInterval(fetchStatus, 1000);
+  </script>
+</body>
+</html>
